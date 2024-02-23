@@ -50,14 +50,14 @@ def do_pack():
     """
     if not os.path.isdir("versions"):
         os.mkdir("versions")
-    currnt_tim = datetime.now()
+    cur_tm = datetime.now()
     output = "versions/web_static_{}{}{}{}{}{}.tgz".format(
-        currnt_tim.year,
-        currnt_tim.month,
-        currnt_tim.day,
-        currnt_tim.hour,
-        currnt_tim.minute,
-        currnt_tim.second
+        cur_tm.year,
+        cur_tm.month,
+        cur_tm.day,
+        cur_tm.hour,
+        cur_tm.minute,
+        cur_tm.second
     )
     try:
         print("Packing web_static to {}".format(output))
@@ -84,23 +84,23 @@ def do_deploy(arch_path):
     # Uncompress the archive to the folder,
     # /data/web_static/releases/<archive filename without extension>
     # on the web server
-    name_file = os.path.basename(arch_path)
-    name_folder = name_file.replace(".tgz", "")
+    nm_file = os.path.basename(arch_path)
+    name_folder = nm_file.replace(".tgz", "")
     folder_path = "/data/web_static/releases/{}/".format(name_folder)
     success = False
 
     try:
         # upload the archive to the /tmp/ directory of the web server
-        put(arch_path, "/tmp/{}".format(name_file))
+        put(arch_path, "/tmp/{}".format(nm_file))
 
         # Create new directory for release
         run("mkdir -p {}".format(folder_path))
 
         # Untar archive
-        run("tar -xzf /tmp/{} -C {}".format(name_file, folder_path))
+        run("tar -xzf /tmp/{} -C {}".format(nm_file, folder_path))
 
         # Delete the archive from the web server
-        run("rm -rf /tmp/{}".format(name_file))
+        run("rm -rf /tmp/{}".format(nm_file))
 
         # Move extraction to proper directory
         run("mv {}web_static/* {}".format(folder_path, folder_path))

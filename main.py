@@ -30,7 +30,7 @@ city_2_1.save()
  Verification
 """
 print("")
-states_all = storage.all(State)
-for state_id, state in states_all.items():
+all_st = storage.all(State)
+for state_id, state in all_st.items():
     for city in state.cities:
         print("Find the city {} in the state {}".format(city, state))
